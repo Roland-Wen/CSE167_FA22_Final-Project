@@ -96,7 +96,7 @@ void keyboard(unsigned char key, int x, int y){
             glutPostRedisplay();
             break;
         case 'p':
-            rayTracer = true;
+            rayTracer = !rayTracer;
             image.putSomeColor();
             glutPostRedisplay();
             break;
