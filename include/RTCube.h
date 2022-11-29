@@ -53,13 +53,13 @@ class RTCube: public RTGeometry {
         for(int i=0;i<36;i+=3){
             Triangle curr;
 
-            curr.P.push_back(glm::vec3(positions[indices[i]]));
-            curr.P.push_back(glm::vec3(positions[indices[i+1]]));
-            curr.P.push_back(glm::vec3(positions[indices[i+2]]));
+            curr.P.push_back(glm::vec3(positions[indices[i]][0],positions[indices[i]][1],positions[indices[i]][2]));
+            curr.P.push_back(glm::vec3(positions[indices[i+1]][0],positions[indices[i+1]][1],positions[indices[i+1]][2]));
+            curr.P.push_back(glm::vec3(positions[indices[i+2]][0],positions[indices[i+2]][1],positions[indices[i+2]][2]));
 
-            curr.N.push_back(glm::vec3(normals[indices[i]]));
-            curr.N.push_back(glm::vec3(normals[indices[i+1]]));
-            curr.N.push_back(glm::vec3(normals[indices[i+2]]));
+            curr.N.push_back(glm::vec3(normals[indices[i]][0],normals[indices[i]][1],normals[indices[i]][2]));
+            curr.N.push_back(glm::vec3(normals[indices[i+1]][0],normals[indices[i+1]][1],normals[indices[i+1]][2]));
+            curr.N.push_back(glm::vec3(normals[indices[i+2]][0],normals[indices[i+2]][1],normals[indices[i+2]][2]));
 
             elements.push_back(curr);
         }

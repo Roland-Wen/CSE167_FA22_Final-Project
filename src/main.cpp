@@ -9,7 +9,6 @@
 #include "Scene.h"
 #include "Image.h"
 
-
 static const int width = 800;
 static const int height = 600;
 static bool rayTracer = false;
