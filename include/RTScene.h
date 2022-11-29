@@ -56,7 +56,7 @@ public:
     void init( void );
     void buildTriangleSoup();
     
-    // destructor
+    /*/ destructor
     ~RTScene(){
         // The containers of pointers own the object pointed to by the pointers.
         // All the objects should be deleted when the object palette is destructed.
@@ -82,7 +82,7 @@ public:
         }
         delete camera;
         delete shader;
-    }
+    }*/
 };
 
 #endif 
