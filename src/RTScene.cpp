@@ -26,6 +26,9 @@ void display_4x4(std::string tag,glm::mat4 m4)
     std::cout<<'\n';
 }
 
+/**
+* IN WORLD COORDINATE
+*/
 void RTScene::buildTriangleSoup() {
     camera -> computeMatrices();
     triangle_soup.clear();

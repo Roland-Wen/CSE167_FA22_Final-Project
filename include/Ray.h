@@ -29,13 +29,14 @@ struct Ray {
 };
 
 namespace RayTracer{
-	const float INF = 10000.0f;
+	const float INF = 100000.0f;
 
 	void printVec3(glm::vec3 in) {
 		std::cout<<"("<<in[0]<<","<<in[1]<<","<<in[2]<<")\n";
 	}
 
 	/**
+	* IN WORLD COORDINATE
 	* generates a ray originated from the camera position,
 	* through the center of the (i,j) pixel into the world
 	* page 10,18
@@ -47,6 +48,7 @@ namespace RayTracer{
 		glm::mat4 C = glm::inverse(cam -> view);
 		glm::vec3 u(C[0][0],C[0][1],C[0][2]);
 		glm::vec3 v(C[1][0],C[1][1],C[1][2]);
+		v = -1.0f*v;
 		glm::vec3 w(C[2][0],C[2][1],C[2][2]);
 
 		
@@ -138,12 +140,12 @@ namespace RayTracer{
 		int w = image.width; int h = image.height;
 		int hitCnt = 0;
 		std::cout<<"Soup size: "<<scene.triangle_soup.size()<<"\n";
-		for(Triangle tri:scene.triangle_soup) {
+		/*for(Triangle tri:scene.triangle_soup) {
 			printVec3(tri.P[0]);
 			printVec3(tri.P[1]);
 			printVec3(tri.P[2]);
 			std::cout<<"----------------------------------\n";
-		}
+		}*/
 		for(int j=0; j<h; j++){
 			for(int i=0; i<w; i++){
 				//std::cout<<j*w+i<<"/"<<h*w<<"\n";
