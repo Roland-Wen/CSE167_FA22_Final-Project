@@ -11,8 +11,8 @@
 #include "Image.h"
 #include "Ray.h"
 
-static const int width = 800;
-static const int height = 600;
+static const int width = 200;
+static const int height = 150;
 static bool rayTracer = false;
 static const char* title = "Scene viewer";
 static const glm::vec4 background(0.1f, 0.2f, 0.3f, 1.0f);
@@ -55,7 +55,11 @@ void initialize(void){
 void display(void){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     
-    if(rayTracer) image.draw();
+    if(rayTracer) {
+        rtscene.buildTriangleSoup();
+        RayTracer::Raytrace(scene.camera,rtscene,image);
+        image.draw();
+    }
     else scene.draw();
     
     glutSwapBuffers();
@@ -70,9 +74,6 @@ void saveScreenShot(const char* filename = "test.png"){
     imag.save(filename);
 }
 
-void rayTracing() {
-    RayTracer::Raytrace(scene.camera, rtscene, image);
-}
 
 void keyboard(unsigned char key, int x, int y){
     switch(key){
@@ -104,12 +105,10 @@ void keyboard(unsigned char key, int x, int y){
             break;
         case 'l':
             scene.shader -> enablelighting = !(scene.shader -> enablelighting);
-            rtscene.shader->enablelighting = !(scene.shader->enablelighting);
             glutPostRedisplay();
             break;
         case 'p':
             rayTracer = !rayTracer;
-            if(rayTracer) rayTracing();
             glutPostRedisplay();
             break;
         case ' ':

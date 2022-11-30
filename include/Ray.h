@@ -29,7 +29,7 @@ struct Ray {
 };
 
 namespace RayTracer{
-	const float INF = 100000.0f;
+	const float INF = 10000.0f;
 
 	/**
 	* generates a ray originated from the camera position,
@@ -38,17 +38,17 @@ namespace RayTracer{
 	*/
 	Ray RayThruPixel(Camera* cam,int i,int j,int width,int height) {
 		Ray ans;
-		ans.p0 = cam->eye;
+		ans.p0 = glm::vec3(0.0f,0.0f,0.0f);
 
-		glm::vec3 w = glm::normalize(cam->eye-cam->target);
+		glm::vec3 w = glm::normalize(cam->eye - cam->target);
 		glm::vec3 u = glm::normalize(glm::cross(cam->up,w));
 		glm::vec3 v = glm::normalize(glm::cross(w,u));
 		float a = cam->aspect;
 		float fovy = cam->fovy;
-		float alpha = 2*(i+0.5f)/width-1.0f;
-		float beta = 1-2*(j+0.5f)/height;
+		float alpha = 2.0f*(i+0.5f)/width-1.0f;
+		float beta = 1.0f-2.0f*(j+0.5f)/height;
 
-		ans.dir = alpha*a*glm::tan(fovy/2)*u+beta*glm::tan(fovy/2)*v-w;
+		ans.dir = alpha*a*glm::tan(fovy/2.0f)*u+beta*glm::tan(fovy/2.0f)*v-w;
 		ans.dir = glm::normalize(ans.dir);
 
 		return ans;
@@ -56,6 +56,7 @@ namespace RayTracer{
 
 	/**
 	* page 30,33
+	* looks good
 	*/
 	Intersection IntersectTriangle(Ray ray,Triangle triangle) {
 		Intersection ans;
@@ -65,7 +66,7 @@ namespace RayTracer{
 		matrix[0] = glm::vec4(triangle.P[0],1.0f);
 		matrix[1] = glm::vec4(triangle.P[1],1.0f);
 		matrix[2] = glm::vec4(triangle.P[2],1.0f);
-		matrix[3] = glm::vec4(-ray.dir,0.0f);
+		matrix[3] = glm::vec4(-1.0f * ray.dir,0.0f);
 		glm::vec4 solution = glm::inverse(matrix)*glm::vec4(ray.p0,1.0f);
 		float lambda[3] ={solution[0], solution[1], solution[2]};
 		float t = solution[3];
@@ -80,7 +81,7 @@ namespace RayTracer{
 		ans.dist = t;
 		ans.P = lambda[0]*triangle.P[0]+lambda[1]*triangle.P[1]+lambda[2]*triangle.P[2];
 		ans.N = glm::normalize(lambda[0]*triangle.N[0]+lambda[1]*triangle.N[1]+lambda[2]*triangle.N[2]);
-		ans.V = -ray.dir;
+		ans.V = -1.0f * ray.dir;
 		ans.triangle = &triangle;
 		return ans;
 	}
@@ -118,13 +119,20 @@ namespace RayTracer{
 	*/
 	void Raytrace(Camera* cam,RTScene scene,Image& image) {
 		int w = image.width; int h = image.height;
+		int hitCnt = 0;
+		std::cout<<"Soup size: "<<scene.triangle_soup.size()<<"\n";
 		for(int j=0; j<h; j++){
 			for(int i=0; i<w; i++){
+				//std::cout<<j*w+i<<"/"<<h*w<<"\n";
 				Ray ray = RayThruPixel(cam,i,j,w,h);
 				Intersection hit = Intersect(ray,scene);
 				if(hit.dist>=INF-10.0f) image.pixels[j*w+i] = glm::vec3(0.0f,0.0f,0.0f);
-				else image.pixels[j*w+i] = FindColor(hit, 0);
+				else {
+					image.pixels[j*w+i] = FindColor(hit,0);
+					hitCnt++;
+				}
 			}
 		}
+		std::cout<<"hitCnt: "<<hitCnt<<"\n";
 	}
 };

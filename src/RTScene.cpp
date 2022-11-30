@@ -1,6 +1,8 @@
 /**************************************************
 RTScene.cpp contains the implementation of the buildTriangleSoup command
 *****************************************************/
+#include <string>
+#include <iostream>
 #include "RTScene.h"
 #include "RTCube.h"
 #include "RTObj.h"
@@ -10,32 +12,32 @@ RTScene.cpp contains the implementation of the buildTriangleSoup command
 
 
 using namespace glm;
-void RTScene::buildTriangleSoup() {
-    // Pre-draw sequence: assign uniforms that are the same for all Geometry::draw call.  These uniforms include the camera view, proj, and the lights.  These uniform do not include modelview and material parameters.
-    camera -> computeMatrices();
-    shader -> view = camera -> view;
-    shader -> projection = camera -> proj;
-    shader -> nlights = light.size();
-    shader -> lightpositions.resize( shader -> nlights );
-    shader -> lightcolors.resize( shader -> nlights );
-    int count = 0;
-    for (std::pair<std::string, Light*> entry : light){
-        shader -> lightpositions[ count ] = (entry.second) -> position;
-        shader -> lightcolors[ count ] = (entry.second) -> color;
-        count++;
+
+void display_4x4(std::string tag,glm::mat4 m4)
+{
+    std::cout<<tag<<'\n';
+    for(int col = 0; col<4; ++col) {
+        std::cout<<"| ";
+        for(int row = 0; row<4; ++row) {
+            std::cout<<m4[row][col]<<'\t';
+        }
+        std::cout<<'\n';
     }
+    std::cout<<'\n';
+}
+
+void RTScene::buildTriangleSoup() {
+    camera -> computeMatrices();
+    triangle_soup.clear();
     
     // Define stacks for depth-first search (DFS)
     std::stack < RTNode* > dfs_stack;
-    std::stack < mat4 >  matrix_stack; // HW3: You will update this matrix_stack during the depth-first search while loop.
+    std::stack < mat4 >  matrix_stack;
     
     // Initialize the current state variable for DFS
     RTNode* cur = node["world"]; // root of the tree
-    mat4 cur_VM = camera -> view; // HW3: You will update this current modelview during the depth first search.  Initially, we are at the "world" node, whose modelview matrix is just camera's view matrix.
-    
-    // HW3: The following is the beginning of the depth-first search algorithm.
-    // HW3: The depth-first search for the node traversal has already been implemented (cur, dfs_stack).
-    // HW3: All you have to do is to also update the states of (cur_VM, matrix_stack) alongside the traversal.  You will only need to modify starting from this line.
+    mat4 cur_VM = camera -> view;
+
     dfs_stack.push(cur);
     matrix_stack.push(cur_VM);
     
@@ -59,35 +61,37 @@ void RTScene::buildTriangleSoup() {
         cur = dfs_stack.top();  dfs_stack.pop();
         cur_VM = matrix_stack.top();  matrix_stack.pop();
         
-        // draw all the models at the current node
+        // apply transformation to all the models at the current node
         for ( size_t i = 0; i < cur -> models.size(); i++ ){
             mat4 modelview = cur_VM * cur -> modeltransforms[i];
+            //display_4x4("modelview",modelview);
+
+            // extract upper left 3*3
+            mat3 A;
+            for(int j = 0; j < 3; j++)
+                A[j] = vec3(modelview[j][0],modelview[j][1],modelview[j][2]);
+            A = inverse(transpose(A));
 
             // Prepare to draw the geometry. Assign the modelview and the material.
             for(Triangle old : (cur -> models[i] -> geometry -> elements)) {
                 Triangle currTriangle;
                 currTriangle.material = (cur -> models[i]) -> material;
-                for(int i = 0; i < 3; i++){
+
+                // loop through all 3 points of the triangle
+                for(int j = 0; j < 3; j++){
                     // apply transformation to the normal
-                    mat3 A;
-                    for(int j = 0; j < 3; j++) 
-                        A[j] = vec3(modelview[j][0], modelview[j][1], modelview[j][2]);
-                    A = inverse(transpose(A));
-                    currTriangle.N.push_back(A * old.N[i]);
+                    currTriangle.N.push_back(A * old.N[j]);
 
                     // apply transformation to the old point
-                    vec4 oldPoint = vec4(old.P[i][0], old.P[i][1], old.P[i][2], 1.0f);
+                    vec4 oldPoint = vec4(old.P[j][0], old.P[j][1], old.P[j][2], 1.0f);
                     oldPoint = modelview * oldPoint;
                     vec3 newPoint = vec3(oldPoint[0] / oldPoint[3],
                                          oldPoint[1] / oldPoint[3],
                                          oldPoint[2] / oldPoint[3]);
                     currTriangle.P.push_back(newPoint);
                 }
+                triangle_soup.push_back(currTriangle);
             }
-            
-            // The draw command
-            //shader -> setUniforms();
-            //( cur -> models[i] ) -> geometry -> draw();
         }
         
         // Continue the DFS: put all the child nodes of the current node in the stack
@@ -96,6 +100,5 @@ void RTScene::buildTriangleSoup() {
             matrix_stack.push( cur_VM * cur -> childtransforms[i] );
         }
         
-    } // End of DFS while loop.
-    // HW3: Your code will only be above this line.
+    }
 }
