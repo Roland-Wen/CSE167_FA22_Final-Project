@@ -51,20 +51,12 @@ namespace RayTracer{
 		v = -1.0f*v;
 		glm::vec3 w(C[2][0],C[2][1],C[2][2]);
 
-		
-		if(i==0&&j==0){
-			std::cout<<"w: "; printVec3(w);
-			std::cout<<"u: "; printVec3(u);
-			std::cout<<"v: "; printVec3(v);
-		}
-
 		float a = cam->aspect;
-		float fovy = cam->fovy * M_PI/180.0f;
+		float fovy = cam->fovy * M_PI/360.0f;
 		float alpha = 2.0f*(i+0.5f)/width-1.0f;
 		float beta = 1.0f-2.0f*(j+0.5f)/height;
 
-		ans.dir = alpha*a*glm::tan(fovy/2.0f)*u+beta*glm::tan(fovy/2.0f)*v-w;
-		ans.dir = glm::normalize(ans.dir);
+		ans.dir = glm::normalize(alpha*a*glm::tan(fovy)*u+beta*glm::tan(fovy)*v-w);
 
 		return ans;
 	}
@@ -83,23 +75,17 @@ namespace RayTracer{
 		matrix[2] = glm::vec4(triangle.P[2],1.0f);
 		matrix[3] = glm::vec4(-1.0f * ray.dir,0.0f);
 		glm::vec4 solution = glm::inverse(matrix)*glm::vec4(ray.p0,1.0f);
-		float lambda[3] ={solution[0], solution[1], solution[2]};
-		for(int i=0;i<3;i++) if(abs(lambda[i]-solution[i])>0.0001f) {
-			std::cout<<"diff:"<<abs(lambda[i]-solution[i])<<"\n";
-			assert(false);
-		}
-		float t = solution[3];
 
 		// no hit
-		if(lambda[0]<0.0f||lambda[1]<0.0f||lambda[2]<0.0f||t<0.0f) {
+		if(solution[0]<0.0f||solution[1]<0.0f||solution[2]<0.0f||solution[3]<0.0f) {
 			ans.dist = INF+10.0f;
 			return ans;
 		}
 
 		// build ans
-		ans.dist = t;
-		ans.P = lambda[0]*triangle.P[0]+lambda[1]*triangle.P[1]+lambda[2]*triangle.P[2];
-		ans.N = glm::normalize(lambda[0]*triangle.N[0]+lambda[1]*triangle.N[1]+lambda[2]*triangle.N[2]);
+		ans.dist = solution[3];
+		ans.P = solution[0]*triangle.P[0]+solution[1]*triangle.P[1]+solution[2]*triangle.P[2];
+		ans.N = glm::normalize(solution[0]*triangle.N[0]+solution[1]*triangle.N[1]+solution[2]*triangle.N[2]);
 		ans.V = -1.0f * ray.dir;
 		ans.triangle = &triangle;
 		return ans;
@@ -138,26 +124,16 @@ namespace RayTracer{
 	*/
 	void Raytrace(Camera* cam,RTScene scene,Image& image) {
 		int w = image.width; int h = image.height;
-		int hitCnt = 0;
 		std::cout<<"Soup size: "<<scene.triangle_soup.size()<<"\n";
-		/*for(Triangle tri:scene.triangle_soup) {
-			printVec3(tri.P[0]);
-			printVec3(tri.P[1]);
-			printVec3(tri.P[2]);
-			std::cout<<"----------------------------------\n";
-		}*/
 		for(int j=0; j<h; j++){
 			for(int i=0; i<w; i++){
 				//std::cout<<j*w+i<<"/"<<h*w<<"\n";
 				Ray ray = RayThruPixel(cam,i,j,w,h);
 				Intersection hit = Intersect(ray,scene);
 				if(hit.dist>=INF-10.0f) image.pixels[j*w+i] = glm::vec3(0.0f,0.0f,0.0f);
-				else {
-					image.pixels[j*w+i] = FindColor(hit,0);
-					hitCnt++;
-				}
+				else image.pixels[j*w+i] = FindColor(hit,0);
 			}
+			//std::cout<<j<<"/"<<h<<"\n";
 		}
-		std::cout<<"hitCnt: "<<hitCnt<<"\n";
 	}
 };

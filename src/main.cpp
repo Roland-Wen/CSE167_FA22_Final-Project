@@ -2,6 +2,8 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
+#include <chrono>
+using namespace std::chrono;
 // Use of degrees is deprecated. Use radians for GLM functions
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
@@ -56,9 +58,13 @@ void display(void){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     
     if(rayTracer) {
+        auto start = high_resolution_clock::now();
         rtscene.buildTriangleSoup();
         RayTracer::Raytrace(scene.camera,rtscene,image);
         image.draw();
+        auto stop = high_resolution_clock::now();
+        auto duration = duration_cast<seconds>(stop-start);
+        std::cout<<"Time taken: "<<duration.count()<<" seconds\n";
     }
     else scene.draw();
     
