@@ -37,8 +37,7 @@ public:
     }
     
     void init(void) {
-        for(int i=0;i<width*height;i++)
-            pixels.push_back(glm::vec3(0,0,0));
+        pixels.resize(width*height);
         glGenFramebuffers(1,&fbo);
         glGenTextures(1,&tbo);
     }

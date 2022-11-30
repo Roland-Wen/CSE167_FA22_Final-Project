@@ -14,7 +14,6 @@
 #include <stack>
 
 #include "Camera.h"
-#include "SurfaceShader.h"
 #include "Light.h"
 #include "RTGeometry.h"
 #include "Material.h"
@@ -34,7 +33,6 @@ public:
 class RTScene {
 public:
     Camera* camera;
-    SurfaceShader* shader;
     // The following are containers of objects serving as the object palettes.
     // The containers store pointers so that they can also store derived class objects.
     std::map< std::string, RTGeometry* > geometry;
@@ -56,7 +54,7 @@ public:
     void init( void );
     void buildTriangleSoup();
     
-    // destructor
+    /* destructor
     ~RTScene(){
         // The containers of pointers own the object pointed to by the pointers.
         // All the objects should be deleted when the object palette is destructed.
@@ -81,8 +79,7 @@ public:
             delete entry.second;
         }
         delete camera;
-        delete shader;
-    }
+    }*/
 };
 
 #endif 

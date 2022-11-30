@@ -78,16 +78,18 @@ void RTObj::init(const char* filename){
     }
     std::cout<<"done."<<std::endl;
 
+    std::cout<<"n: "<<n<<"\n";
+
     for(int i=0;i<n;i+=3) {
         Triangle curr;
 
-        curr.P.push_back(glm::vec3(vertices[indices[i]]));
-        curr.P.push_back(glm::vec3(vertices[indices[i+1]]));
-        curr.P.push_back(glm::vec3(vertices[indices[i+2]]));
+        curr.P.push_back(vertices[indices[i  ]]);
+        curr.P.push_back(vertices[indices[i+1]]);
+        curr.P.push_back(vertices[indices[i+2]]);
 
-        curr.N.push_back(glm::vec3(normals[indices[i]]));
-        curr.N.push_back(glm::vec3(normals[indices[i+1]]));
-        curr.N.push_back(glm::vec3(normals[indices[i+2]]));
+        curr.N.push_back(normals[indices[i  ]]);
+        curr.N.push_back(normals[indices[i+1]]);
+        curr.N.push_back(normals[indices[i+2]]);
 
         elements.push_back(curr);
     }

@@ -12,6 +12,12 @@ void RTScene::init(void){
     geometry["teapot"] = new RTObj;
     geometry["bunny"] = new RTObj;
     geometry["cube"] -> init();
+    /*for(auto tri:geometry["cube"]->elements){
+        std::cout<<"("<<tri.P[0][0]<<","<<tri.P[0][1]<<","<<tri.P[0][2]<<")\n";
+        std::cout<<"("<<tri.P[1][0]<<","<<tri.P[1][1]<<","<<tri.P[1][2]<<")\n";
+        std::cout<<"("<<tri.P[2][0]<<","<<tri.P[2][1]<<","<<tri.P[2][2]<<")\n";
+        std::cout<<"---------------------\n";
+    }*/
     geometry["teapot"] -> init("models/teapot.obj");
     geometry["bunny"] -> init("models/bunny.obj");
     
@@ -98,10 +104,10 @@ void RTScene::init(void){
     
     node["table top"] -> models.push_back( model["table piece"] );
     node["table top"] -> modeltransforms.push_back( translate(vec3(0.0f,-0.1f,0.0f)) * scale(vec3(2.0f,0.2f,1.0f)) );
-    node["table top"] -> childnodes.push_back( node["teapot1"] );
-    node["table top"] -> childtransforms.push_back( translate(vec3(-0.5f,0.0f,0.0f)) );
-    node["table top"] -> childnodes.push_back( node["teapot2"] );
-    node["table top"] -> childtransforms.push_back( translate(vec3( 0.5f,0.0f,0.0f)) * rotate( -120.0f*float(M_PI)/180.0f, vec3(0.0f, 1.0f, 0.0f) ) );
+    //node["table top"] -> childnodes.push_back( node["teapot1"] );
+    //node["table top"] -> childtransforms.push_back( translate(vec3(-0.5f,0.0f,0.0f)) );
+    //node["table top"] -> childnodes.push_back( node["teapot2"] );
+    //node["table top"] -> childtransforms.push_back( translate(vec3( 0.5f,0.0f,0.0f)) * rotate( -120.0f*float(M_PI)/180.0f, vec3(0.0f, 1.0f, 0.0f) ) );
     
     node["teapot1"] -> models.push_back( model["teapot1"] );
     node["teapot1"] -> modeltransforms.push_back( scale(vec3(0.5f)) );
@@ -113,10 +119,10 @@ void RTScene::init(void){
     
     node["world"] -> childnodes.push_back( node["table"] );
     node["world"] -> childtransforms.push_back( mat4(1.0f) );
-    node["world"] -> childnodes.push_back( node["bunny"] );
-    node["world"] -> childtransforms.push_back( translate(vec3(-1.8f,0.0f,0.0f)) * rotate( 90.0f*float(M_PI)/180.0f, vec3(0.0f, 1.0f, 0.0f) ));
-    node["world"] -> models.push_back( model["bulb"] );
-    node["world"] -> modeltransforms.push_back( translate(vec3(0.0f,2.0f,0.0f))*scale(vec3(0.1f)) );
+    //node["world"] -> childnodes.push_back( node["bunny"] );
+    //node["world"] -> childtransforms.push_back( translate(vec3(-1.8f,0.0f,0.0f)) * rotate( 90.0f*float(M_PI)/180.0f, vec3(0.0f, 1.0f, 0.0f) ));
+    //node["world"] -> models.push_back( model["bulb"] );
+    //node["world"] -> modeltransforms.push_back(translate(vec3(0.0f,1.0f,0.0f))* scale(vec3(1.5f)));
     
     // Put a camera
     camera = new Camera;
@@ -124,11 +130,4 @@ void RTScene::init(void){
     camera -> eye_default = vec3( 0.0f, 1.0f, 5.0f );
     camera -> up_default = vec3( 0.0f, 1.0f, 0.0f );
     camera -> reset();
-    
-    // Initialize shader
-    shader = new SurfaceShader;
-    shader -> read_source( "shaders/projective.vert", "shaders/lighting.frag" );
-    shader -> compile();
-    glUseProgram(shader -> program);
-    shader -> initUniforms();
 }
