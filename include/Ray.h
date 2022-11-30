@@ -31,6 +31,10 @@ struct Ray {
 namespace RayTracer{
 	const float INF = 10000.0f;
 
+	void printVec3(glm::vec3 in) {
+		std::cout<<"("<<in[0]<<","<<in[1]<<","<<in[2]<<")\n";
+	}
+
 	/**
 	* generates a ray originated from the camera position,
 	* through the center of the (i,j) pixel into the world
@@ -38,13 +42,23 @@ namespace RayTracer{
 	*/
 	Ray RayThruPixel(Camera* cam,int i,int j,int width,int height) {
 		Ray ans;
-		ans.p0 = glm::vec3(0.0f,0.0f,0.0f);
+		ans.p0 = cam->eye;
 
-		glm::vec3 w = glm::normalize(cam->eye - cam->target);
-		glm::vec3 u = glm::normalize(glm::cross(cam->up,w));
-		glm::vec3 v = glm::normalize(glm::cross(w,u));
+		glm::vec3 w = cam->eye - cam->target;
+		w = glm::normalize(w);
+		cam->up = glm::normalize(cam->up);
+		glm::vec3 u = glm::cross(cam->up,w);
+		u = glm::normalize(u);
+		glm::vec3 v = glm::cross(w,u);
+		
+		if(i==0&&j==0){
+			std::cout<<"w: "; printVec3(w);
+			std::cout<<"u: "; printVec3(u);
+			std::cout<<"v: "; printVec3(v);
+		}
+
 		float a = cam->aspect;
-		float fovy = cam->fovy;
+		float fovy = cam->fovy * M_PI/180.0f;
 		float alpha = 2.0f*(i+0.5f)/width-1.0f;
 		float beta = 1.0f-2.0f*(j+0.5f)/height;
 
@@ -69,10 +83,14 @@ namespace RayTracer{
 		matrix[3] = glm::vec4(-1.0f * ray.dir,0.0f);
 		glm::vec4 solution = glm::inverse(matrix)*glm::vec4(ray.p0,1.0f);
 		float lambda[3] ={solution[0], solution[1], solution[2]};
+		for(int i=0;i<3;i++) if(abs(lambda[i]-solution[i])>0.0001f) {
+			std::cout<<"diff:"<<abs(lambda[i]-solution[i])<<"\n";
+			assert(false);
+		}
 		float t = solution[3];
 
 		// no hit
-		if(lambda[0]<=0.0f||lambda[1]<=0.0f||lambda[2]<=0.0f||t<=0.0f) {
+		if(lambda[0]<0.0f||lambda[1]<0.0f||lambda[2]<0.0f||t<0.0f) {
 			ans.dist = INF+10.0f;
 			return ans;
 		}

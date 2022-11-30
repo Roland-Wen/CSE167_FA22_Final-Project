@@ -36,7 +36,7 @@ void RTScene::buildTriangleSoup() {
     
     // Initialize the current state variable for DFS
     RTNode* cur = node["world"]; // root of the tree
-    mat4 cur_VM = camera -> view;
+    mat4 cur_VM = mat4(1.0f);
 
     dfs_stack.push(cur);
     matrix_stack.push(cur_VM);
@@ -80,10 +80,10 @@ void RTScene::buildTriangleSoup() {
                 // loop through all 3 points of the triangle
                 for(int j = 0; j < 3; j++){
                     // apply transformation to the normal
-                    currTriangle.N.push_back(A * old.N[j]);
+                    currTriangle.N.push_back(glm::normalize(A * old.N[j]));
 
                     // apply transformation to the old point
-                    vec4 oldPoint = vec4(old.P[j][0], old.P[j][1], old.P[j][2], 1.0f);
+                    vec4 oldPoint = vec4(old.P[j], 1.0f);
                     oldPoint = modelview * oldPoint;
                     vec3 newPoint = vec3(oldPoint[0] / oldPoint[3],
                                          oldPoint[1] / oldPoint[3],
