@@ -44,12 +44,11 @@ namespace RayTracer{
 		Ray ans;
 		ans.p0 = cam->eye;
 
-		glm::vec3 w = cam->eye - cam->target;
-		w = glm::normalize(w);
-		cam->up = glm::normalize(cam->up);
-		glm::vec3 u = glm::cross(cam->up,w);
-		u = glm::normalize(u);
-		glm::vec3 v = glm::cross(w,u);
+		glm::mat4 C = glm::inverse(cam -> view);
+		glm::vec3 u(C[0][0],C[0][1],C[0][2]);
+		glm::vec3 v(C[1][0],C[1][1],C[1][2]);
+		glm::vec3 w(C[2][0],C[2][1],C[2][2]);
+
 		
 		if(i==0&&j==0){
 			std::cout<<"w: "; printVec3(w);
@@ -139,6 +138,12 @@ namespace RayTracer{
 		int w = image.width; int h = image.height;
 		int hitCnt = 0;
 		std::cout<<"Soup size: "<<scene.triangle_soup.size()<<"\n";
+		for(Triangle tri:scene.triangle_soup) {
+			printVec3(tri.P[0]);
+			printVec3(tri.P[1]);
+			printVec3(tri.P[2]);
+			std::cout<<"----------------------------------\n";
+		}
 		for(int j=0; j<h; j++){
 			for(int i=0; i<w; i++){
 				//std::cout<<j*w+i<<"/"<<h*w<<"\n";
