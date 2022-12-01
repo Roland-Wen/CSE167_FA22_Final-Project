@@ -60,6 +60,7 @@ void display(void){
     if(rayTracer) {
         auto start = high_resolution_clock::now();
         rtscene.buildTriangleSoup();
+        RayTracer::initVariables(&rtscene);
         RayTracer::Raytrace(scene.camera,rtscene,image);
         image.draw();
         auto stop = high_resolution_clock::now();
