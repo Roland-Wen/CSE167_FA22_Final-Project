@@ -114,8 +114,8 @@ namespace RayTracer{
 	* shade the light color seen by the in-coming ray
 	* page 15
 	*/
-	glm::vec3 FindColor(Intersection hit,int recursion_depth,std::vector<Light*> lights) { //page 15
-		// grab the coefficients of the material
+	glm::vec3 FindColor(Intersection hit,int recursion_depth,
+		std::vector<Light*> lights, RTScene scene) {																			   // grab the coefficients of the material
 		glm::vec4 emision = hit.triangle.material->emision;
 		float shininess = hit.triangle.material->shininess;
 		glm::vec4 ambient = hit.triangle.material->ambient;
@@ -133,7 +133,24 @@ namespace RayTracer{
 				l[j] = lights[i]->position[j]*hitPosition.w-hitPosition[j]*lights[i]->position.w;
 			l = glm::normalize(l);
 			glm::vec3 hitNormal = hit.N;
+
+			// shoot a light slightly above(?) the hitting point towards the light
+			// if interesect with any triangle, delta = 0
+			Ray shadowRay;
+			shadowRay.p0 = hit.P + 0.01f*hit.N;
+			shadowRay.dir = l;
+			Intersection hit2 = Intersect(shadowRay,scene);
+			if(hit2.dist<=INF-10.0f) continue;
+
 			delta += diffuse*glm::max(glm::dot(hitNormal,l),0.0f);
+
+			// shoot a mirror reflecting ray from the hit position
+			// intersect that ray with the scene --> hit2
+			// call findColor(hit2, depth+1)
+			// mutiply the result by specular and add that to delta
+			// when depth reaches maximum(6), use the model (what we have now)
+			// TODO:
+
 
 			// v is the direction to the viewer
 			glm::vec3 v,h;
@@ -167,7 +184,7 @@ namespace RayTracer{
 				Ray ray = RayThruPixel(cam,i,j,w,h);
 				Intersection hit = Intersect(ray,scene);
 				if(hit.dist>=INF-10.0f) image.pixels[j*w+i] = glm::vec3(0.1f,0.2f,0.3f);
-				else image.pixels[j*w+i] = FindColor(hit,0,lights);
+				else image.pixels[j*w+i] = FindColor(hit,0,lights,scene);
 			}
 			//std::cout<<j<<"/"<<h<<"\n";
 		}
