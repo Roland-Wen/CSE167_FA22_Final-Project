@@ -87,7 +87,7 @@ namespace RayTracer{
 		ans.P = solution[0]*triangle.P[0]+solution[1]*triangle.P[1]+solution[2]*triangle.P[2];
 		ans.N = glm::normalize(solution[0]*triangle.N[0]+solution[1]*triangle.N[1]+solution[2]*triangle.N[2]);
 		ans.V = -1.0f * ray.dir;
-		ans.triangle = &triangle;
+		ans.triangle = triangle;
 		return ans;
 	}
 
@@ -100,7 +100,7 @@ namespace RayTracer{
 		float mindist = INF;
 		Intersection hit;
 		hit.dist = INF;
-		for(Triangle object:scene.triangle_soup) { // Find closest intersection; test all objects
+		for(Triangle& object:scene.triangle_soup) { // Find closest intersection; test all objects
 			Intersection hitTmp = IntersectTriangle(ray,object);
 			if(hitTmp.dist<mindist) { // closer than previous hit
 				mindist = hitTmp.dist;
@@ -114,8 +114,37 @@ namespace RayTracer{
 	* shade the light color seen by the in-coming ray
 	* page 15
 	*/
-	glm::vec3 FindColor(Intersection hit,int recursion_depth) { //page 15
-		return glm::vec3(1.0f,1.0f,1.0f);
+	glm::vec3 FindColor(Intersection hit,int recursion_depth,std::vector<Light*> lights) { //page 15
+		// grab the coefficients of the material
+		glm::vec4 emision = hit.triangle.material->emision;
+		float shininess = hit.triangle.material->shininess;
+		glm::vec4 ambient = hit.triangle.material->ambient;
+		glm::vec4 diffuse = hit.triangle.material->diffuse;
+		glm::vec4 specular = hit.triangle.material->specular;
+
+		glm::vec4 R = emision;
+		for(int i=0;i<lights.size();i++){
+			glm::vec4 delta = ambient;
+
+			// l = direction to the light = light postion - hit position
+			glm::vec4 hitPosition = glm::vec4(hit.P,1.0f);
+			glm::vec3 l;
+			for(int j = 0; j<3; j++)
+				l[j] = lights[i]->position[j]*hitPosition.w-hitPosition[j]*lights[i]->position.w;
+			l = glm::normalize(l);
+			glm::vec3 hitNormal = hit.N;
+			delta += diffuse*glm::max(glm::dot(hitNormal,l),0.0f);
+
+			// v is the direction to the viewer
+			glm::vec3 v,h;
+			v = glm::normalize(hit.V);
+			h = glm::normalize(v+l);
+			delta += specular*glm::pow(glm::max(glm::dot(hitNormal,h),0.0f),shininess);
+
+			delta *= lights[i]->color;
+			R += delta;
+		}
+		return glm::vec3(R[0],R[1],R[2]);
 	}
 
 	/**
@@ -125,13 +154,20 @@ namespace RayTracer{
 	void Raytrace(Camera* cam,RTScene scene,Image& image) {
 		int w = image.width; int h = image.height;
 		std::cout<<"Soup size: "<<scene.triangle_soup.size()<<"\n";
+
+		std::vector<Light*> lights;
+		// get lights
+		for(auto light:scene.light) lights.push_back(light.second);
+		std::cout<<lights.size()<<"\n";
+
+		// main loops
 		for(int j=0; j<h; j++){
 			for(int i=0; i<w; i++){
 				//std::cout<<j*w+i<<"/"<<h*w<<"\n";
 				Ray ray = RayThruPixel(cam,i,j,w,h);
 				Intersection hit = Intersect(ray,scene);
-				if(hit.dist>=INF-10.0f) image.pixels[j*w+i] = glm::vec3(0.0f,0.0f,0.0f);
-				else image.pixels[j*w+i] = FindColor(hit,0);
+				if(hit.dist>=INF-10.0f) image.pixels[j*w+i] = glm::vec3(0.1f,0.2f,0.3f);
+				else image.pixels[j*w+i] = FindColor(hit,0,lights);
 			}
 			//std::cout<<j<<"/"<<h<<"\n";
 		}
