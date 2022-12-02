@@ -35,7 +35,7 @@ struct Ray {
 
 namespace RayTracer{
 	const float INF = 100000.0f;
-	const int MAX_DEPTH = 0;
+	const int MAX_DEPTH = 5;
 	RTScene* scene;
 	Camera* cam;
 	std::vector<Light*> lights;
@@ -78,7 +78,6 @@ namespace RayTracer{
 
 	/**
 	* page 30,33
-	* looks good
 	*/
 	Intersection* IntersectTriangle(Ray* ray,Triangle* triangle) {
 		Intersection* ans = new Intersection;
@@ -104,6 +103,21 @@ namespace RayTracer{
 		ans->V = -ray->dir;
 		ans->triangle = triangle;
 		return ans;
+	}
+
+	/*
+	* Returns whether the ray intersects the triangle
+	*/
+	bool boolIntersectTriangle(Ray* ray,Triangle* triangle) {
+		// solve the equation on page 36
+		glm::mat4 matrix;
+		matrix[0] = glm::vec4(triangle->P[0],1.0f);
+		matrix[1] = glm::vec4(triangle->P[1],1.0f);
+		matrix[2] = glm::vec4(triangle->P[2],1.0f);
+		matrix[3] = glm::vec4(-ray->dir,0.0f);
+		glm::vec4 solution = glm::inverse(matrix)*glm::vec4(ray->p0,1.0f);
+
+		return solution[0]>=0.0f&&solution[1]>=0.0f&&solution[2]>=0.0f&&solution[3]>=0.0f;
 	}
 
 	/**
@@ -142,7 +156,7 @@ namespace RayTracer{
 			// l = direction to the light = light postion - hit position
 			glm::vec4 hitPosition = glm::vec4(hit->P,1.0f);
 			glm::vec3 l;
-			for(int j = 0; j<3; j++)
+			for(int j=0; j<3; j++)
 				l[j] = lights[i]->position[j]*hitPosition.w-hitPosition[j]*lights[i]->position.w;
 			l = glm::normalize(l);
 
@@ -151,12 +165,14 @@ namespace RayTracer{
 			Ray* shadowRay = new Ray;
 			shadowRay->p0 = hit->P + 0.01f*hit->N;
 			shadowRay->dir = l;
-			Intersection* hit2 = Intersect(shadowRay);
-			if(hit2->dist<=INF-10.0f) {
-				delete hit2;
-				continue;
-			}
-			delete hit2;
+			bool shadow = false;
+			for(Triangle& object:scene->triangle_soup)
+				if(boolIntersectTriangle(shadowRay, &object)) {
+					shadow = true;
+					break;
+				}
+			delete shadowRay;
+			if(shadow) continue;
 
 			glm::vec4 delta = ambient;
 			glm::vec3 hitNormal = hit->N;

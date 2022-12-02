@@ -2,7 +2,7 @@
 # and include sub-projects here.
 #
 cmake_minimum_required (VERSION 3.8)
-set(CMAKE_CXX_FLAGS "/Ox")
+set(CMAKE_CXX_FLAGS "/Ox /O2")
 
 project ("CSE167_FA22_HW3")
 

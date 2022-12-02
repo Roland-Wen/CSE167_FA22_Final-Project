@@ -13,8 +13,8 @@ using namespace std::chrono;
 #include "Image.h"
 #include "Ray.h"
 
-static const int width = 200;
-static const int height = 150;
+static const int width = 800;
+static const int height = 600;
 static bool rayTracer = false, lastRayTracer = false;
 static const char* title = "Scene viewer";
 static const glm::vec4 background(0.1f, 0.2f, 0.3f, 1.0f);
@@ -60,8 +60,8 @@ void display(void){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     
     if(!lastRayTracer && rayTracer) {
-        rtscene.buildTriangleSoup();
         RayTracer::initVariables(&rtscene);
+        rtscene.buildTriangleSoup();
         auto start = high_resolution_clock::now();
         RayTracer::Raytrace(image);
         auto stop = high_resolution_clock::now();
