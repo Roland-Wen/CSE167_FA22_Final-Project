@@ -30,9 +30,21 @@ struct Ray {
 
 namespace RayTracer{
 	const float INF = 100000.0f;
+	const int MAX_DEPTH = 2;
+	RTScene* scene;
+	Camera* cam;
+	std::vector<Light*> lights;
 
 	void printVec3(glm::vec3 in) {
 		std::cout<<"("<<in[0]<<","<<in[1]<<","<<in[2]<<")\n";
+	}
+
+	void initVariables(RTScene* s) {
+		scene = s;
+		cam = scene->camera;
+		// get lights
+		for(auto light:scene->light) lights.push_back(light.second);
+		std::cout<<lights.size()<<"\n";
 	}
 
 	/**
@@ -41,14 +53,13 @@ namespace RayTracer{
 	* through the center of the (i,j) pixel into the world
 	* page 10,18
 	*/
-	Ray RayThruPixel(Camera* cam,int i,int j,int width,int height) {
+	Ray RayThruPixel(int i,int j,int width,int height) {
 		Ray ans;
 		ans.p0 = cam->eye;
 
 		glm::mat4 C = glm::inverse(cam -> view);
 		glm::vec3 u(C[0][0],C[0][1],C[0][2]);
-		glm::vec3 v(C[1][0],C[1][1],C[1][2]);
-		v = -1.0f*v;
+		glm::vec3 v(-C[1][0],-C[1][1],-C[1][2]);
 		glm::vec3 w(C[2][0],C[2][1],C[2][2]);
 
 		float a = cam->aspect;
@@ -73,7 +84,7 @@ namespace RayTracer{
 		matrix[0] = glm::vec4(triangle.P[0],1.0f);
 		matrix[1] = glm::vec4(triangle.P[1],1.0f);
 		matrix[2] = glm::vec4(triangle.P[2],1.0f);
-		matrix[3] = glm::vec4(-1.0f * ray.dir,0.0f);
+		matrix[3] = glm::vec4(-ray.dir,0.0f);
 		glm::vec4 solution = glm::inverse(matrix)*glm::vec4(ray.p0,1.0f);
 
 		// no hit
@@ -86,7 +97,7 @@ namespace RayTracer{
 		ans.dist = solution[3];
 		ans.P = solution[0]*triangle.P[0]+solution[1]*triangle.P[1]+solution[2]*triangle.P[2];
 		ans.N = glm::normalize(solution[0]*triangle.N[0]+solution[1]*triangle.N[1]+solution[2]*triangle.N[2]);
-		ans.V = -1.0f * ray.dir;
+		ans.V = -ray.dir;
 		ans.triangle = triangle;
 		return ans;
 	}
@@ -96,11 +107,11 @@ namespace RayTracer{
 	* returns the closest hit
 	* page 11,28,31
 	*/
-	Intersection Intersect(Ray ray,RTScene scene) {
+	Intersection Intersect(Ray ray) {
 		float mindist = INF;
 		Intersection hit;
 		hit.dist = INF;
-		for(Triangle& object:scene.triangle_soup) { // Find closest intersection; test all objects
+		for(Triangle& object:scene->triangle_soup) { // Find closest intersection; test all objects
 			Intersection hitTmp = IntersectTriangle(ray,object);
 			if(hitTmp.dist<mindist) { // closer than previous hit
 				mindist = hitTmp.dist;
@@ -114,7 +125,7 @@ namespace RayTracer{
 	* shade the light color seen by the in-coming ray
 	* page 15
 	*/
-	glm::vec3 FindColor(Intersection hit,int recursion_depth,std::vector<Light*> lights) { //page 15
+	glm::vec3 FindColor(Intersection hit,int recursion_depth) {
 		// grab the coefficients of the material
 		glm::vec4 emision = hit.triangle.material->emision;
 		float shininess = hit.triangle.material->shininess;
@@ -133,13 +144,40 @@ namespace RayTracer{
 				l[j] = lights[i]->position[j]*hitPosition.w-hitPosition[j]*lights[i]->position.w;
 			l = glm::normalize(l);
 			glm::vec3 hitNormal = hit.N;
+
+			// shoot a light slightly above the hitting point towards the light
+			// if interesect with any triangle, delta = 0
+			Ray shadowRay;
+			shadowRay.p0 = hit.P + 0.01f*hit.N;
+			shadowRay.dir = l;
+			Intersection hit2 = Intersect(shadowRay);
+			if(hit2.dist<=INF-10.0f) continue;
+
 			delta += diffuse*glm::max(glm::dot(hitNormal,l),0.0f);
 
-			// v is the direction to the viewer
-			glm::vec3 v,h;
-			v = glm::normalize(hit.V);
-			h = glm::normalize(v+l);
-			delta += specular*glm::pow(glm::max(glm::dot(hitNormal,h),0.0f),shininess);
+			// shoot a mirror reflecting ray from the hit position
+			// intersect that ray with the scene --> hit2
+			// call findColor(hit2, depth+1)
+			// mutiply the result by specular and add that to delta
+			// when depth reaches maximum(6), use the model (what we have now)
+			if(recursion_depth >= MAX_DEPTH) {
+			    // v is the direction to the viewer
+				glm::vec3 v,h;
+				v = glm::normalize(hit.V);
+				h = glm::normalize(v+l);
+				delta += specular*glm::pow(glm::max(glm::dot(hitNormal,h),0.0f),shininess);
+			} else {
+				Ray reflecting;
+				reflecting.p0 = hit.P+0.01f*hit.N;
+				// component perpendicular to n should be the same
+				// component parallel to b should be inversed
+				reflecting.dir  = -glm::dot(-hit.V,hit.N)*hit.N; // vertical
+				reflecting.dir += -hit.V-glm::dot(-hit.V,hit.N)*hit.N; // horizontal
+				Intersection reflectingHit = Intersect(reflecting);
+				glm::vec3 reflectingColor(0.1f,0.2f,0.3f);
+				if(reflectingHit.dist <= INF - 10.0f) reflectingColor = FindColor(reflectingHit,recursion_depth+1);
+				delta += specular*glm::vec4(reflectingColor,1.0f);
+			}
 
 			delta *= lights[i]->color;
 			R += delta;
@@ -151,23 +189,18 @@ namespace RayTracer{
 	* main framework
 	* page 9
 	*/
-	void Raytrace(Camera* cam,RTScene scene,Image& image) {
+	void Raytrace(Image& image) {
 		int w = image.width; int h = image.height;
-		std::cout<<"Soup size: "<<scene.triangle_soup.size()<<"\n";
-
-		std::vector<Light*> lights;
-		// get lights
-		for(auto light:scene.light) lights.push_back(light.second);
-		std::cout<<lights.size()<<"\n";
-
+		std::cout<<"Soup size: "<<scene->triangle_soup.size()<<"\n";
+	
 		// main loops
 		for(int j=0; j<h; j++){
 			for(int i=0; i<w; i++){
 				//std::cout<<j*w+i<<"/"<<h*w<<"\n";
-				Ray ray = RayThruPixel(cam,i,j,w,h);
-				Intersection hit = Intersect(ray,scene);
+				Ray ray = RayThruPixel(i,j,w,h);
+				Intersection hit = Intersect(ray);
 				if(hit.dist>=INF-10.0f) image.pixels[j*w+i] = glm::vec3(0.1f,0.2f,0.3f);
-				else image.pixels[j*w+i] = FindColor(hit,0,lights);
+				else image.pixels[j*w+i] = FindColor(hit,0);
 			}
 			//std::cout<<j<<"/"<<h<<"\n";
 		}

@@ -3,10 +3,94 @@ Scene.inl contains the definition of the scene graph
 *****************************************************/
 #include "Scene.h"
 #include "Cube.h"
+#include "Plane.h"
 #include "Obj.h"
 
 using namespace glm;
 void Scene::init(void){
+    /*geometry["plane"] = new Plane;
+    geometry["plane"] -> init();
+    geometry["cube"] = new Cube;
+    geometry["cube"] -> init();
+
+    material["woodR"] = new Material;
+    material["woodR"]->ambient = vec4(0.1f,0.1f,0.1f,1.0f);
+    material["woodR"]->diffuse = vec4(1.0f,0.0f,0.0f,1.0f);
+    material["woodR"]->specular = vec4(0.3f,0.15f,0.1f,1.0f);
+    material["woodR"]->shininess = 50.0f;
+
+    material["woodG"] = new Material;
+    material["woodG"]->ambient = vec4(0.1f,0.1f,0.1f,1.0f);
+    material["woodG"]->diffuse = vec4(0.0f,1.0f,0.0f,1.0f);
+    material["woodG"]->specular = vec4(0.15f,0.3f,0.1f,1.0f);
+    material["woodG"]->shininess = 50.0f;
+
+    material["woodW"] = new Material;
+    material["woodW"]->ambient = vec4(0.1f,0.1f,0.1f,1.0f);
+    material["woodW"]->diffuse = vec4(1.0f,1.0f,1.0f,1.0f);
+    material["woodW"]->specular = vec4(0.3f,0.3f,0.3f,1.0f);
+    material["woodW"]->shininess = 50.0f;
+
+    material["silver"] = new Material;
+    material["silver"]->ambient = vec4(0.1f,0.1f,0.1f,1.0f);
+    material["silver"]->diffuse = vec4(0.9f,0.9f,0.9f,1.0f);
+    material["silver"]->specular = vec4(0.9f,0.9f,0.9f,1.0f);
+    material["silver"]->shininess = 50.0f;
+
+    material["bulb"] = new Material;
+    material["bulb"]->ambient = vec4(0.0f,0.0f,0.0f,1.0f);
+    material["bulb"]->diffuse = vec4(0.0f,0.0f,0.0f,1.0f);
+    material["bulb"]->specular = vec4(1.0f,1.0f,1.0f,1.0f);
+    material["bulb"]->emision = vec4(1.0f,1.0f,1.0f,1.0f);
+    material["bulb"]->shininess = 200.0f;
+
+    model["wallR"] = new Model;
+    model["wallR"]->geometry = geometry["plane"];
+    model["wallR"]->material = material["woodR"];
+    model["wallG"] = new Model;
+    model["wallG"]->geometry = geometry["plane"];
+    model["wallG"]->material = material["woodG"];
+    model["wallW"] = new Model;
+    model["wallW"]->geometry = geometry["plane"];
+    model["wallW"]->material = material["woodW"];
+    model["box"] = new Model;
+    model["box"]->geometry = geometry["cube"];
+    model["box"]->material = material["silver"];
+    model["bulb"] = new Model;
+    model["bulb"]->geometry = geometry["plane"];
+    model["bulb"]->material = material["bulb"];
+
+    light["bulb"] = new Light;
+    light["bulb"]->position = vec4(0.0f,1.8f,-0.25f,1.0f);
+    light["bulb"]->color = 1.5f*vec4(1.0f,1.0f,1.0f,1.0f);
+
+    node["room"] = new Node;
+    // left
+    node["room"]->models.push_back(model["wallR"]);
+    node["room"]->modeltransforms.push_back(translate(vec3(-0.5f,0.5f,0.0f))*rotate(float(M_PI)/2.0f,vec3(0.0f,1.0f,0.0f)));
+    // right
+    node["room"]->models.push_back(model["wallG"]);
+    node["room"]->modeltransforms.push_back(translate(vec3(0.5f,0.5f,0.0f))*rotate(float(M_PI)/-2.0f,vec3(0.0f,1.0f,0.0f)));
+    // bottom
+    node["room"]->models.push_back(model["wallW"]);
+    node["room"]->modeltransforms.push_back(rotate(float(M_PI)/2.0f,vec3(-1.0f,0.0f,0.0f)));
+    // top
+    node["room"]->models.push_back(model["wallW"]);
+    node["room"]->modeltransforms.push_back(translate(vec3(0.0f,1.0f,0.0f))*rotate(float(M_PI)/-2.0f,vec3(-1.0f,0.0f,0.0f)));
+    // back
+    node["room"]->models.push_back(model["wallW"]);
+    node["room"]->modeltransforms.push_back(translate(vec3(0.0f,0.5f,-0.5f)));
+    // box
+    node["room"]->models.push_back(model["box"]);
+    node["room"]->modeltransforms.push_back(rotate(float(M_PI/4.0f),vec3(0.0f,1.0f,0.0f))*scale(vec3(0.3f))*translate(vec3(0.0f,0.5f,-0.5f)));
+    // bulb
+    node["room"]->models.push_back(model["bulb"]);
+    node["room"]->modeltransforms.push_back(scale(vec3(0.5f))*translate(vec3(0.0f,1.9f,0.0f))*rotate(float(M_PI)/-2.0f,vec3(-1.0f,0.0f,0.0f)));
+
+    node["world"]->childnodes.push_back(node["room"]);
+    node["world"]->childtransforms.push_back(scale(vec3(1.5f)));
+    */
+    
     // Create a geometry palette
     geometry["cube"] = new Cube;
     geometry["teapot"] = new Obj;
@@ -117,6 +201,7 @@ void Scene::init(void){
     //node["world"] -> childtransforms.push_back( translate(vec3(-1.8f,0.0f,0.0f)) * rotate( 90.0f*float(M_PI)/180.0f, vec3(0.0f, 1.0f, 0.0f) ));
     node["world"] -> models.push_back( model["bulb"] );
     node["world"]->modeltransforms.push_back(translate(vec3(0.0f,2.0f,0.0f))* scale(vec3(0.1f)));
+    
 
     // Put a camera
     camera = new Camera;
