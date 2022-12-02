@@ -30,7 +30,7 @@ struct Ray {
 
 namespace RayTracer{
 	const float INF = 100000.0f;
-	const int MAX_DEPTH = 1;
+	const int MAX_DEPTH = 2;
 	RTScene* scene;
 	Camera* cam;
 	std::vector<Light*> lights;
@@ -59,8 +59,7 @@ namespace RayTracer{
 
 		glm::mat4 C = glm::inverse(cam -> view);
 		glm::vec3 u(C[0][0],C[0][1],C[0][2]);
-		glm::vec3 v(C[1][0],C[1][1],C[1][2]);
-		v = -1.0f*v;
+		glm::vec3 v(-C[1][0],-C[1][1],-C[1][2]);
 		glm::vec3 w(C[2][0],C[2][1],C[2][2]);
 
 		float a = cam->aspect;
@@ -85,7 +84,7 @@ namespace RayTracer{
 		matrix[0] = glm::vec4(triangle.P[0],1.0f);
 		matrix[1] = glm::vec4(triangle.P[1],1.0f);
 		matrix[2] = glm::vec4(triangle.P[2],1.0f);
-		matrix[3] = glm::vec4(-1.0f * ray.dir,0.0f);
+		matrix[3] = glm::vec4(-ray.dir,0.0f);
 		glm::vec4 solution = glm::inverse(matrix)*glm::vec4(ray.p0,1.0f);
 
 		// no hit
@@ -98,7 +97,7 @@ namespace RayTracer{
 		ans.dist = solution[3];
 		ans.P = solution[0]*triangle.P[0]+solution[1]*triangle.P[1]+solution[2]*triangle.P[2];
 		ans.N = glm::normalize(solution[0]*triangle.N[0]+solution[1]*triangle.N[1]+solution[2]*triangle.N[2]);
-		ans.V = -1.0f * ray.dir;
+		ans.V = -ray.dir;
 		ans.triangle = triangle;
 		return ans;
 	}
@@ -190,9 +189,9 @@ namespace RayTracer{
 	* main framework
 	* page 9
 	*/
-	void Raytrace(Camera* cam,RTScene scene,Image& image) {
+	void Raytrace(Image& image) {
 		int w = image.width; int h = image.height;
-		std::cout<<"Soup size: "<<scene.triangle_soup.size()<<"\n";
+		std::cout<<"Soup size: "<<scene->triangle_soup.size()<<"\n";
 	
 		// main loops
 		for(int j=0; j<h; j++){

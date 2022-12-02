@@ -58,12 +58,12 @@ void display(void){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     
     if(rayTracer) {
-        auto start = high_resolution_clock::now();
         rtscene.buildTriangleSoup();
         RayTracer::initVariables(&rtscene);
-        RayTracer::Raytrace(scene.camera,rtscene,image);
-        image.draw();
+        auto start = high_resolution_clock::now();
+        RayTracer::Raytrace(image);
         auto stop = high_resolution_clock::now();
+        image.draw();
         auto duration = duration_cast<seconds>(stop-start);
         std::cout<<"Time taken: "<<duration.count()<<" seconds\n";
     }

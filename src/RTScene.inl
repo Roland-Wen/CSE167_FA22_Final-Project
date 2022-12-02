@@ -3,21 +3,101 @@ RTScene.inl contains the definition of the scene graph
 *****************************************************/
 #include "RTScene.h"
 #include "RTCube.h"
+#include "RTPlane.h"
 #include "RTObj.h"
 
 using namespace glm;
 void RTScene::init(void){
+    /*
+    geometry["plane"] = new RTPlane;
+    geometry["plane"]->init();
+    geometry["cube"] = new RTCube;
+    geometry["cube"]->init();
+
+    material["woodR"] = new Material;
+    material["woodR"]->ambient = vec4(0.1f,0.1f,0.1f,1.0f);
+    material["woodR"]->diffuse = vec4(1.0f,0.0f,0.0f,1.0f);
+    material["woodR"]->specular = vec4(0.3f,0.15f,0.1f,1.0f);
+    material["woodR"]->shininess = 50.0f;
+
+    material["woodG"] = new Material;
+    material["woodG"]->ambient = vec4(0.1f,0.1f,0.1f,1.0f);
+    material["woodG"]->diffuse = vec4(0.0f,1.0f,0.0f,1.0f);
+    material["woodG"]->specular = vec4(0.15f,0.3f,0.1f,1.0f);
+    material["woodG"]->shininess = 50.0f;
+
+    material["woodW"] = new Material;
+    material["woodW"]->ambient = vec4(0.1f,0.1f,0.1f,1.0f);
+    material["woodW"]->diffuse = vec4(1.0f,1.0f,1.0f,1.0f);
+    material["woodW"]->specular = vec4(0.3f,0.3f,0.3f,1.0f);
+    material["woodW"]->shininess = 50.0f;
+
+    material["silver"] = new Material;
+    material["silver"]->ambient = vec4(0.1f,0.1f,0.1f,1.0f);
+    material["silver"]->diffuse = vec4(0.9f,0.9f,0.9f,1.0f);
+    material["silver"]->specular = vec4(0.9f,0.9f,0.9f,1.0f);
+    material["silver"]->shininess = 50.0f;
+
+    material["bulb"] = new Material;
+    material["bulb"]->ambient = vec4(0.0f,0.0f,0.0f,1.0f);
+    material["bulb"]->diffuse = vec4(0.0f,0.0f,0.0f,1.0f);
+    material["bulb"]->specular = vec4(1.0f,1.0f,1.0f,1.0f);
+    material["bulb"]->emision = vec4(1.0f,1.0f,1.0f,1.0f);
+    material["bulb"]->shininess = 200.0f;
+
+    model["wallR"] = new RTModel;
+    model["wallR"]->geometry = geometry["plane"];
+    model["wallR"]->material = material["woodR"];
+    model["wallG"] = new RTModel;
+    model["wallG"]->geometry = geometry["plane"];
+    model["wallG"]->material = material["woodG"];
+    model["wallW"] = new RTModel;
+    model["wallW"]->geometry = geometry["plane"];
+    model["wallW"]->material = material["woodW"];
+    model["box"] = new RTModel;
+    model["box"]->geometry = geometry["cube"];
+    model["box"]->material = material["silver"];
+    model["bulb"] = new RTModel;
+    model["bulb"]->geometry = geometry["plane"];
+    model["bulb"]->material = material["bulb"];
+
+    light["bulb"] = new Light;
+    light["bulb"]->position = vec4(0.0f,1.8f,-0.25f,1.0f);
+    light["bulb"]->color = 1.5f*vec4(1.0f,1.0f,1.0f,1.0f);
+
+    node["room"] = new RTNode;
+    // left
+    node["room"]->models.push_back(model["wallR"]);
+    node["room"]->modeltransforms.push_back(translate(vec3(-0.5f,0.5f,0.0f))*rotate(float(M_PI)/2.0f,vec3(0.0f,1.0f,0.0f)));
+    // right
+    node["room"]->models.push_back(model["wallG"]);
+    node["room"]->modeltransforms.push_back(translate(vec3(0.5f,0.5f,0.0f))*rotate(float(M_PI)/-2.0f,vec3(0.0f,1.0f,0.0f)));
+    // bottom
+    node["room"]->models.push_back(model["wallW"]);
+    node["room"]->modeltransforms.push_back(rotate(float(M_PI)/2.0f,vec3(-1.0f,0.0f,0.0f)));
+    // top
+    node["room"]->models.push_back(model["wallW"]);
+    node["room"]->modeltransforms.push_back(translate(vec3(0.0f,1.0f,0.0f))*rotate(float(M_PI)/-2.0f,vec3(-1.0f,0.0f,0.0f)));
+    // back
+    node["room"]->models.push_back(model["wallW"]);
+    node["room"]->modeltransforms.push_back(translate(vec3(0.0f,0.5f,-0.5f)));
+    // box
+    node["room"]->models.push_back(model["box"]);
+    node["room"]->modeltransforms.push_back(rotate(float(M_PI/4.0f),vec3(0.0f,1.0f,0.0f))*scale(vec3(0.3f))*translate(vec3(0.0f,0.5f,-0.5f)));
+    // bulb
+    node["room"]->models.push_back(model["bulb"]);
+    node["room"]->modeltransforms.push_back(scale(vec3(0.5f))*translate(vec3(0.0f,1.9f,0.0f))*rotate(float(M_PI)/-2.0f,vec3(-1.0f,0.0f,0.0f)));
+
+    node["world"]->childnodes.push_back(node["room"]);
+    node["world"]->childtransforms.push_back(scale(vec3(1.5f)));
+    */
+
+    
     // Create a geometry palette
     geometry["cube"] = new RTCube;
     geometry["teapot"] = new RTObj;
     geometry["bunny"] = new RTObj;
     geometry["cube"] -> init();
-    /*for(auto tri:geometry["cube"]->elements){
-        std::cout<<"("<<tri.P[0][0]<<","<<tri.P[0][1]<<","<<tri.P[0][2]<<")\n";
-        std::cout<<"("<<tri.P[1][0]<<","<<tri.P[1][1]<<","<<tri.P[1][2]<<")\n";
-        std::cout<<"("<<tri.P[2][0]<<","<<tri.P[2][1]<<","<<tri.P[2][2]<<")\n";
-        std::cout<<"---------------------\n";
-    }*/
     geometry["teapot"] -> init("models/teapot.obj");
     geometry["bunny"] -> init("models/bunny.obj");
     
@@ -123,7 +203,7 @@ void RTScene::init(void){
     //node["world"] -> childtransforms.push_back( translate(vec3(-1.8f,0.0f,0.0f)) * rotate( 90.0f*float(M_PI)/180.0f, vec3(0.0f, 1.0f, 0.0f) ));
     node["world"] -> models.push_back( model["bulb"] );
     node["world"]->modeltransforms.push_back(translate(vec3(0.0f,2.0f,0.0f))* scale(vec3(0.1f)));
-
+    
     // Put a camera
     camera = new Camera;
     camera -> target_default = vec3( 0.0f, 1.0f, 0.0f );
