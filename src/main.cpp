@@ -15,11 +15,12 @@ using namespace std::chrono;
 
 static const int width = 200;
 static const int height = 150;
-static bool rayTracer = false;
+static bool rayTracer = false, lastRayTracer = false;
 static const char* title = "Scene viewer";
 static const glm::vec4 background(0.1f, 0.2f, 0.3f, 1.0f);
 static Scene scene;
 static RTScene rtscene;
+static Camera oldCam;
 static Image image(width, height);
 
 #include "hw3AutoScreenshots.h"
@@ -55,9 +56,10 @@ void initialize(void){
 }
 
 void display(void){
+    if(lastRayTracer&&rayTracer) return;
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     
-    if(rayTracer) {
+    if(!lastRayTracer && rayTracer) {
         rtscene.buildTriangleSoup();
         RayTracer::initVariables(&rtscene);
         auto start = high_resolution_clock::now();
@@ -68,6 +70,8 @@ void display(void){
         std::cout<<"Time taken: "<<duration.count()<<" seconds\n";
     }
     else scene.draw();
+
+    lastRayTracer = rayTracer;
     
     glutSwapBuffers();
     glFlush();

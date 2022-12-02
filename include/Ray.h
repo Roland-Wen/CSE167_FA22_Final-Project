@@ -30,7 +30,7 @@ struct Ray {
 
 namespace RayTracer{
 	const float INF = 100000.0f;
-	const int MAX_DEPTH = 2;
+	const int MAX_DEPTH = 0;
 	RTScene* scene;
 	Camera* cam;
 	std::vector<Light*> lights;
@@ -44,7 +44,7 @@ namespace RayTracer{
 		cam = scene->camera;
 		// get lights
 		for(auto light:scene->light) lights.push_back(light.second);
-		std::cout<<lights.size()<<"\n";
+		std::cout<<"# of lights: "<<lights.size()<<"\n";
 	}
 
 	/**
@@ -62,12 +62,11 @@ namespace RayTracer{
 		glm::vec3 v(-C[1][0],-C[1][1],-C[1][2]);
 		glm::vec3 w(C[2][0],C[2][1],C[2][2]);
 
-		float a = cam->aspect;
 		float fovy = cam->fovy * M_PI/360.0f;
 		float alpha = 2.0f*(i+0.5f)/width-1.0f;
 		float beta = 1.0f-2.0f*(j+0.5f)/height;
 
-		ans->dir = glm::normalize(alpha*a*glm::tan(fovy)*u+beta*glm::tan(fovy)*v-w);
+		ans->dir = glm::normalize(alpha*cam->aspect*glm::tan(fovy)*u+beta*glm::tan(fovy)*v-w);
 
 		return ans;
 	}
@@ -210,7 +209,7 @@ namespace RayTracer{
 				delete ray;
 				delete hit;
 			}
-			//std::cout<<j<<"/"<<h<<"\n";
+			std::cout<<j+1<<"/"<<h<<"\n";
 		}
 	}
 };
