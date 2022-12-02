@@ -1,16 +1,21 @@
 # ninja log v5
-76	1096	6915587378945855	CMakeFiles/ModelViewer.dir/src/Camera.cpp.obj	dfc7552874d73da0
-2	37	0	CMakeFiles/CopyShaders	6b891060363eb38d
-86	1976	6915587387752953	CMakeFiles/ModelViewer.dir/src/Obj.cpp.obj	e34e02e843ef98c9
-2	37	0	C:/Roland/4UCSD/2022 fall/CSE 167/CSE167_FA22_Final-Project/out/build/x64-debug/CMakeFiles/CopyShaders	6b891060363eb38d
-82	1963	6915587387611340	CMakeFiles/ModelViewer.dir/src/RTObj.cpp.obj	926745ebc1641fac
-6	62	0	CMakeFiles/CopyModels	ab1c71ab9d5419f5
-6	62	0	C:/Roland/4UCSD/2022 fall/CSE 167/CSE167_FA22_Final-Project/out/build/x64-debug/CMakeFiles/CopyModels	ab1c71ab9d5419f5
-94	1578	6915587383781486	CMakeFiles/ModelViewer.dir/src/Shader.cpp.obj	c105b371770a6714
-76	991	6916354221803226	CMakeFiles/ModelViewer.dir/src/Image.cpp.obj	7fd0a0768348d02b
-60	1391	6916422991443842	CMakeFiles/ModelViewer.dir/src/RTScene.cpp.obj	3cd90b8c042c54f0
-63	1674	6916422994289246	CMakeFiles/ModelViewer.dir/src/Scene.cpp.obj	b588ff7884bab3da
-98	438	6915587372388871	CMakeFiles/ModelViewer.dir/src/Ray.cpp.obj	8ce100798781c71a
-62	1298	6916423662115039	CMakeFiles/ModelViewer.dir/src/main.cpp.obj	5325e4381c2f3d23
-1298	1436	6916423663273712	ModelViewer.exe	8a19c42fc31ea2c
-0	10	0	clean	8c45b54705a541e8
+0	52	0	CMakeFiles/CopyShaders	3f5e30a45046e86f
+0	52	0	C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-debug/CMakeFiles/CopyShaders	3f5e30a45046e86f
+4	85	0	CMakeFiles/CopyModels	6046998fdad9bb23
+4	85	0	C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-debug/CMakeFiles/CopyModels	6046998fdad9bb23
+106	202	6916471569443898	CMakeFiles/ModelViewer.dir/src/Ray.cpp.obj	e1a6e557b1767e1f
+88	948	6916471576813826	CMakeFiles/ModelViewer.dir/src/Camera.cpp.obj	52367e1ecc8f14bc
+102	1803	6916471585339819	CMakeFiles/ModelViewer.dir/src/Shader.cpp.obj	7a9fd0b5f075ae19
+98	2523	6916471592465420	CMakeFiles/ModelViewer.dir/src/Obj.cpp.obj	154318fc43064442
+91	2549	6916471592844394	CMakeFiles/ModelViewer.dir/src/RTObj.cpp.obj	c7e0283d63c15cef
+95	2575	6916471593103698	CMakeFiles/ModelViewer.dir/src/RTScene.cpp.obj	582775306a892744
+85	2689	6916471594270600	CMakeFiles/ModelViewer.dir/src/Image.cpp.obj	f5cfde9189edef25
+110	3142	6916471598741633	CMakeFiles/ModelViewer.dir/src/main.cpp.obj	ac6784e5bad3fee8
+114	3247	6916471599819540	CMakeFiles/ModelViewer.dir/src/Scene.cpp.obj	a67ff8be59197323
+3248	3698	6916471604137198	ModelViewer.exe	aa2e5b9e7264de36
+2	35	0	CMakeFiles/CopyShaders	3f5e30a45046e86f
+2	35	0	C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-debug/CMakeFiles/CopyShaders	3f5e30a45046e86f
+5	63	0	CMakeFiles/CopyModels	6046998fdad9bb23
+5	63	0	C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-debug/CMakeFiles/CopyModels	6046998fdad9bb23
+63	1598	6916478056078787	CMakeFiles/ModelViewer.dir/src/main.cpp.obj	ac6784e5bad3fee8
+1599	1742	6916478057283538	ModelViewer.exe	aa2e5b9e7264de36

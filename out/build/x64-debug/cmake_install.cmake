@@ -1,8 +1,8 @@
-# Install script for directory: C:/Roland/4UCSD/2022 fall/CSE 167/CSE167_FA22_Final-Project
+# Install script for directory: C:/Roland/4UCSD/2022 fall/CSE 167/final
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Roland/4UCSD/2022 fall/CSE 167/CSE167_FA22_Final-Project/out/install/x64-debug")
+  set(CMAKE_INSTALL_PREFIX "C:/Roland/4UCSD/2022 fall/CSE 167/final/out/install/x64-debug")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Roland/4UCSD/2022 fall/CSE 167/CSE167_FA22_Final-Project/out/build/x64-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
