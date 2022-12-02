@@ -4,6 +4,11 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <ppl.h>
+#include <array>
+#include <sstream>
+
+using namespace concurrency;
 
 #ifdef __APPLE__
 #include <OpenGL/gl3.h>
@@ -134,15 +139,12 @@ namespace RayTracer{
 
 		glm::vec4 R = emision;
 		for(int i=0;i<lights.size();i++){
-			glm::vec4 delta = ambient;
-
 			// l = direction to the light = light postion - hit position
 			glm::vec4 hitPosition = glm::vec4(hit->P,1.0f);
 			glm::vec3 l;
 			for(int j = 0; j<3; j++)
 				l[j] = lights[i]->position[j]*hitPosition.w-hitPosition[j]*lights[i]->position.w;
 			l = glm::normalize(l);
-			glm::vec3 hitNormal = hit->N;
 
 			// shoot a light slightly above the hitting point towards the light
 			// if interesect with any triangle, delta = 0
@@ -156,6 +158,8 @@ namespace RayTracer{
 			}
 			delete hit2;
 
+			glm::vec4 delta = ambient;
+			glm::vec3 hitNormal = hit->N;
 			delta += diffuse*glm::max(glm::dot(hitNormal,l),0.0f);
 
 			// shoot a mirror reflecting ray from the hit position
@@ -174,8 +178,9 @@ namespace RayTracer{
 				reflecting->p0 = hit->P+0.01f*hit->N;
 				// component perpendicular to n should be the same
 				// component parallel to b should be inversed
-				reflecting->dir  = -glm::dot(-hit->V,hit->N)*hit->N; // vertical
-				reflecting->dir += -hit->V-glm::dot(-hit->V,hit->N)*hit->N; // horizontal
+				float verticalLen = glm::dot(-hit->V,hit->N);
+				reflecting->dir  = -verticalLen*hit->N; // vertical
+				reflecting->dir += -hit->V + reflecting->dir; // horizontal
 				Intersection* reflectingHit = Intersect(reflecting);
 				glm::vec3 reflectingColor(0.1f,0.2f,0.3f);
 				if(reflectingHit->dist <= INF - 10.0f) reflectingColor = FindColor(reflectingHit,recursion_depth+1);
@@ -199,7 +204,7 @@ namespace RayTracer{
 		std::cout<<"Soup size: "<<scene->triangle_soup.size()<<"\n";
 	
 		// main loops
-		for(int j=0; j<h; j++){
+		parallel_for(int(0), h, [&](int j) {
 			for(int i=0; i<w; i++){
 				//std::cout<<j*w+i<<"/"<<h*w<<"\n";
 				Ray* ray = RayThruPixel(i,j,w,h);
@@ -209,7 +214,6 @@ namespace RayTracer{
 				delete ray;
 				delete hit;
 			}
-			std::cout<<j+1<<"/"<<h<<"\n";
-		}
+		});
 	}
 };

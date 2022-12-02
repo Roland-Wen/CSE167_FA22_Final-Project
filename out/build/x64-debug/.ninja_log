@@ -64,3 +64,33 @@
 62	1156	6916604921978280	CMakeFiles/ModelViewer.dir/src/RTScene.cpp.obj	dc7bc562eba0c1ad
 65	1326	6916604923640905	CMakeFiles/ModelViewer.dir/src/main.cpp.obj	cedcd90af85dff21
 1327	1491	6916604925099918	ModelViewer.exe	aa2e5b9e7264de36
+6	49	0	CMakeFiles/CopyShaders	3f5e30a45046e86f
+6	49	0	C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-debug/CMakeFiles/CopyShaders	3f5e30a45046e86f
+2	109	0	CMakeFiles/CopyModels	6046998fdad9bb23
+2	109	0	C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-debug/CMakeFiles/CopyModels	6046998fdad9bb23
+109	1573	6917052187968683	CMakeFiles/ModelViewer.dir/src/RTScene.cpp.obj	dc7bc562eba0c1ad
+118	1689	6917052189145505	CMakeFiles/ModelViewer.dir/src/Scene.cpp.obj	7e1c8567d7e99b4b
+114	1759	6917052189863596	CMakeFiles/ModelViewer.dir/src/main.cpp.obj	cedcd90af85dff21
+1759	1964	6917052191482798	ModelViewer.exe	aa2e5b9e7264de36
+12	86	0	CMakeFiles/CopyShaders	3f5e30a45046e86f
+12	86	0	C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-debug/CMakeFiles/CopyShaders	3f5e30a45046e86f
+4	146	0	CMakeFiles/CopyModels	6046998fdad9bb23
+4	146	0	C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-debug/CMakeFiles/CopyModels	6046998fdad9bb23
+147	2911	6917086002831451	CMakeFiles/ModelViewer.dir/src/main.cpp.obj	cedcd90af85dff21
+2912	3125	6917086004586749	ModelViewer.exe	aa2e5b9e7264de36
+12	91	0	CMakeFiles/CopyShaders	3f5e30a45046e86f
+12	91	0	C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-debug/CMakeFiles/CopyShaders	3f5e30a45046e86f
+4	154	0	CMakeFiles/CopyModels	6046998fdad9bb23
+4	154	0	C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-debug/CMakeFiles/CopyModels	6046998fdad9bb23
+3	81	0	CMakeFiles/CopyShaders	3f5e30a45046e86f
+3	81	0	C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-debug/CMakeFiles/CopyShaders	3f5e30a45046e86f
+11	176	0	CMakeFiles/CopyModels	6046998fdad9bb23
+11	176	0	C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-debug/CMakeFiles/CopyModels	6046998fdad9bb23
+177	2748	6917101200552677	CMakeFiles/ModelViewer.dir/src/main.cpp.obj	cedcd90af85dff21
+2748	3064	6917101203262529	ModelViewer.exe	aa2e5b9e7264de36
+4	78	0	CMakeFiles/CopyShaders	3f5e30a45046e86f
+4	78	0	C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-debug/CMakeFiles/CopyShaders	3f5e30a45046e86f
+11	146	0	CMakeFiles/CopyModels	6046998fdad9bb23
+11	146	0	C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-debug/CMakeFiles/CopyModels	6046998fdad9bb23
+147	2796	6917101669390754	CMakeFiles/ModelViewer.dir/src/main.cpp.obj	cedcd90af85dff21
+2796	3074	6917101671773895	ModelViewer.exe	aa2e5b9e7264de36
