@@ -21,11 +21,11 @@ Compilation of the C compiler identification source "CMakeCCompilerId.c" produce
 
 Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.obj"
 
-The C compiler identification is MSVC, found in "C:/Roland/4UCSD/2022 fall/CSE 167/CSE167_FA22_Final-Project/out/build/x64-debug/CMakeFiles/3.22.22022201-MSVC_2/CompilerIdC/CMakeCCompilerId.exe"
+The C compiler identification is MSVC, found in "C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-debug/CMakeFiles/3.22.22022201-MSVC_2/CompilerIdC/CMakeCCompilerId.exe"
 
 Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
 Compiler: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.31.31103/bin/Hostx64/x64/cl.exe 
-Build flags: 
+Build flags: /Ox;/O2
 Id flags:  
 
 The output was:
@@ -45,21 +45,23 @@ Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" p
 
 Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.obj"
 
-The CXX compiler identification is MSVC, found in "C:/Roland/4UCSD/2022 fall/CSE 167/CSE167_FA22_Final-Project/out/build/x64-debug/CMakeFiles/3.22.22022201-MSVC_2/CompilerIdCXX/CMakeCXXCompilerId.exe"
+The CXX compiler identification is MSVC, found in "C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-debug/CMakeFiles/3.22.22022201-MSVC_2/CompilerIdCXX/CMakeCXXCompilerId.exe"
 
 Detecting C compiler ABI info compiled with the following output:
-Change Dir: C:/Roland/4UCSD/2022 fall/CSE 167/CSE167_FA22_Final-Project/out/build/x64-debug/CMakeFiles/CMakeTmp
+Change Dir: C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-debug/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_7c977 && [1/2] Building C object CMakeFiles\cmTC_7c977.dir\CMakeCCompilerABI.c.obj
-[2/2] Linking C executable cmTC_7c977.exe
+Run Build Command(s):C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_4b944 && [1/2] Building C object CMakeFiles\cmTC_4b944.dir\CMakeCCompilerABI.c.obj
+[2/2] Linking C executable cmTC_4b944.exe
 
 
 
 Detecting CXX compiler ABI info compiled with the following output:
-Change Dir: C:/Roland/4UCSD/2022 fall/CSE 167/CSE167_FA22_Final-Project/out/build/x64-debug/CMakeFiles/CMakeTmp
+Change Dir: C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-debug/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_57b25 && [1/2] Building CXX object CMakeFiles\cmTC_57b25.dir\CMakeCXXCompilerABI.cpp.obj
-[2/2] Linking CXX executable cmTC_57b25.exe
+Run Build Command(s):C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_96022 && [1/2] Building CXX object CMakeFiles\cmTC_96022.dir\CMakeCXXCompilerABI.cpp.obj
+cl : Command line warning D9025 : overriding '/Ox' with '/Od'
+cl : Command line warning D9025 : overriding '/O2' with '/Od'
+[2/2] Linking CXX executable cmTC_96022.exe
 
 
 

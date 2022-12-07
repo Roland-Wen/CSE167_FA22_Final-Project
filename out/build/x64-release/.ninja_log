@@ -1,0 +1,27 @@
+# ninja log v5
+0	32	0	CMakeFiles/CopyShaders	f8517c1c38e27f76
+0	32	0	C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-release/CMakeFiles/CopyShaders	f8517c1c38e27f76
+4	53	0	CMakeFiles/CopyModels	4fc767e709a77b9f
+4	53	0	C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-release/CMakeFiles/CopyModels	4fc767e709a77b9f
+76	293	6917228198406307	CMakeFiles/ModelViewer.dir/src/Ray.cpp.obj	9d20d0ed834519fe
+56	1011	6917228206820745	CMakeFiles/ModelViewer.dir/src/Camera.cpp.obj	9b7a1ba91d367205
+83	1808	6917228214827332	CMakeFiles/ModelViewer.dir/src/Shader.cpp.obj	b83bab38d5f9a05f
+54	2238	6917228219136595	CMakeFiles/ModelViewer.dir/src/Image.cpp.obj	397f530056696019
+60	2309	6917228219595364	CMakeFiles/ModelViewer.dir/src/Obj.cpp.obj	45a3ed4b951bbff8
+63	2557	6917228222245376	CMakeFiles/ModelViewer.dir/src/RTObj.cpp.obj	3ec0e4835ef88cde
+68	4244	6917228239109634	CMakeFiles/ModelViewer.dir/src/RTScene.cpp.obj	7a7b3e62ea4d48e4
+72	4608	6917228242837545	CMakeFiles/ModelViewer.dir/src/Scene.cpp.obj	691cbb4c4d4b913c
+79	4670	6917228243480906	CMakeFiles/ModelViewer.dir/src/main.cpp.obj	d721f0e9eb35f53b
+4671	4881	6917228245577393	ModelViewer.exe	33323f3a4737836f
+2	34	0	CMakeFiles/CopyShaders	f8517c1c38e27f76
+2	34	0	C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-release/CMakeFiles/CopyShaders	f8517c1c38e27f76
+6	64	0	CMakeFiles/CopyModels	4fc767e709a77b9f
+6	64	0	C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-release/CMakeFiles/CopyModels	4fc767e709a77b9f
+65	2018	6917229341891207	CMakeFiles/ModelViewer.dir/src/main.cpp.obj	d721f0e9eb35f53b
+2018	2168	6917229343380999	ModelViewer.exe	33323f3a4737836f
+1	35	0	CMakeFiles/CopyShaders	f8517c1c38e27f76
+1	35	0	C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-release/CMakeFiles/CopyShaders	f8517c1c38e27f76
+4	63	0	CMakeFiles/CopyModels	4fc767e709a77b9f
+4	63	0	C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-release/CMakeFiles/CopyModels	4fc767e709a77b9f
+64	1774	6917230364374660	CMakeFiles/ModelViewer.dir/src/main.cpp.obj	d721f0e9eb35f53b
+1774	1931	6917230365960417	ModelViewer.exe	33323f3a4737836f

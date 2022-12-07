@@ -1,0 +1,5 @@
+C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-release/CMakeFiles/ModelViewer.dir
+C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-release/CMakeFiles/CopyShaders.dir
+C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-release/CMakeFiles/CopyModels.dir
+C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-release/CMakeFiles/edit_cache.dir
+C:/Roland/4UCSD/2022 fall/CSE 167/final/out/build/x64-release/CMakeFiles/rebuild_cache.dir
